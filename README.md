@@ -1,0 +1,2 @@
+# pratham.consulting
+Parked Page
