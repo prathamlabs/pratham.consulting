@@ -3,52 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pratham Consulting</title>
+    <title>Pratham Consulting - Your Next Breakthrough Starts Here</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rufina:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Helvetica Neue', sans-serif;
+            font-family: "Montserrat", sans-serif;
             margin: 0;
-            background-color: #1a1a1a; /* Dark background */
-            color: #fff;
-            text-align: center;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f8f9fa;
+            color: #646464;
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+        .rufina-regular {
+          font-family: "Rufina", serif;
+          font-weight: 400;
+          font-style: normal;
         }
 
-        #hero {
-            height: 100vh;
+        .rufina-bold {
+          font-family: "Rufina", serif;
+          font-weight: 700;
+          font-style: normal;
+        }
+
+        .montserrat-300 {
+          font-family: "Montserrat", sans-serif;
+          font-optical-sizing: auto;
+          font-weight: 300;
+          font-style: normal;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .left-section, .right-section {
+            flex: 1;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+        .left-section {
+            background-color: #f1f1f1;
+            text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-
-        .animated-text {
-            font-size: 3rem;
-            animation: fadeIn 2s ease-in-out;
+        .logo {
+            max-width: 250px;
+            margin-bottom: 20px;
         }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        h1 {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #64b494;
+        }
+        p {
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+        .right-section {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .did-you-know {
+            font-size: 1.5em;
+            margin-top: 20px;
+            padding-left: 50px;
+            position: relative;
+        }
+        .did-you-know:before {
+            content: "“";
+            font-size: 3em;
+            position: absolute;
+            left: 10px;
+            top: 0;
+            color: #64b494;
+        }
+        .did-you-know span {
+            font-size: 1.5em;
+            float: left;
+            line-height: 1em;
+            margin-right: 8px;
+            color: #64b494;
+        }
+        .countdown {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #646464;
+            text-align: center;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            .logo {
+                max-width: 100px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .did-you-know {
+                font-size: 0.9em;
+                padding-left: 40px;
+            }
         }
     </style>
 </head>
-<body>
+<body class="montserrat-300">
 
-    <div id="hero">
-        <h1 class="animated-text">Your Next Breakthrough</h1>
-        <h1 class="animated-text">Starts Here...</h1>
-        <p style="font-size: 1.2rem; margin-top: 2rem;">Get ready to reimagine what's possible.</p>
 
-        <button style="
-            background-color: #e85d04; /* Orange button */
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 2rem;
-        ">Learn More</button> 
+
+    <div class="container">
+
+        <div class="left-section">
+            <img src="./pratham-logo.png" alt="Pratham Logo" class="logo">
+            <h1 class="rufina-regular">Your Next Breakthrough Starts Here..</h1>
+            <p>Get ready to reimagine what's possible.</p>
+            <p>Pratham Consulting is bringing a fresh perspective and cutting-edge strategies to the world of consulting.</p>
+
+        <div class="countdown" style="font-size: 0.85rem" id="countdown"></div>
+        </div>
+        <div class="right-section">
+            <div class="did-you-know" id="fact"></div>
+        </div>
+
     </div>
 
+    <canvas id="background"></canvas>
+    <script>
+        const canvas = document.getElementById('background');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function initParticles() {
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 3 + 1,
+                    dx: Math.random() * 2 - 1,
+                    dy: Math.random() * 2 - 1
+                });
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(100, 180, 148, 0.8)';
+                ctx.fill();
+                particle.x += particle.dx;
+                particle.y += particle.dy;
+                if (particle.x > canvas.width || particle.x < 0) {
+                    particle.dx = -particle.dx;
+                }
+                if (particle.y > canvas.height || particle.y < 0) {
+                    particle.dy = -particle.dy;
+                }
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('load', () => {
+            resizeCanvas();
+            initParticles();
+            animateParticles();
+            showRandomFact();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        });
+
+        const facts = [
+            "Consulting firms can help organizations achieve up to 30% improvement in operational efficiency.",
+            "Artificial intelligence is expected to add $15.7 trillion to the global economy by 2030.",
+            "Cloud computing can reduce IT costs by 30% or more.",
+            "Companies using data analytics are 5 times more likely to make faster decisions.",
+            "AI adoption in business has increased by over 270% in the last four years.",
+            "Businesses using consultants have a 50% higher chance of survival in the first 5 years.",
+            "The cloud technology market is expected to reach $623.3 billion by 2023.",
+            "Over 60% of companies believe AI will change the nature of their industry within five years.",
+            "Consulting services are utilized by 80% of Fortune 500 companies.",
+            "Big data analytics can lead to a 60% increase in company productivity.",
+            "75% of enterprises use some form of AI in their operations.",
+            "The global business consulting market is projected to grow at a CAGR of 4.5% from 2021 to 2026.",
+            "Cloud technology has increased business agility for 93% of companies.",
+            "AI-driven companies have a 10% higher customer satisfaction rate.",
+            "Consulting engagements often result in a 20% increase in market competitiveness.",
+            "Artificial intelligence can improve product development by 30%.",
+            "Businesses that adopt cloud solutions see a 60% reduction in energy consumption.",
+            "Companies that leverage AI have seen a 40% reduction in operational costs.",
+            "Using business intelligence, companies can increase revenue by up to 20%.",
+            "Consulting firms have been crucial in 70% of successful digital transformations."
+        ];
+
+        function showRandomFact() {
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            const fact = facts[randomIndex];
+            const firstLetter = fact.charAt(0);
+            document.getElementById('fact').innerHTML = `<span>${firstLetter}</span>${fact.slice(1)}`;
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const eventDate = new Date('August 15, 2024 00:00:00');
+            const currentTime = now.getTime();
+            const eventTime = eventDate.getTime();
+            const remainingTime = eventTime - currentTime;
+
+            const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').textContent = `Launching in ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        setInterval(showRandomFact, 5000);
+    </script>
 </body>
 </html>
